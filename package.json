@@ -1,5 +1,5 @@
 {
-  "name": "element-work",
+  "name": "scm",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.23.0",
     "core-js": "^3.6.5",
+    "echarts": "^5.2.1",
+    "element-ui": "^2.15.6",
+    "js-cookie": "^3.0.1",
+    "query-string": "^7.0.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
