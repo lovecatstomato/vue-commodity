@@ -37,10 +37,10 @@
             <el-menu-item index="/manager/supplierlist/Supplier"
               >供应商列表</el-menu-item
             >
-            <el-menu-item index="/manager/purchase/app"
+            <el-menu-item index="/manager/purchase/add"
               >采购单录入</el-menu-item
             >
-            <el-menu-item index="2-3">采购单列表</el-menu-item>
+            <el-menu-item index="/manager/purchase/addlist">采购单列表</el-menu-item>
             <el-menu-item index="2-4">采购单了结</el-menu-item>
             <el-menu-item index="2-5">采购单查询</el-menu-item>
           </el-submenu>

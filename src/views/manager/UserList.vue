@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- <el-button type="primary" icon="el-icon-circle-plus-outline"
-      >添加用户</el-button
-    > -->
     <el-tabs type="border-card">
       <el-tab-pane label="用户列表">
         <el-table
@@ -206,6 +203,7 @@ export default {
   created() {
     //渲染页面
     this.getUserData();
+    
   },
   // 按钮事件
   methods: {
@@ -220,6 +218,7 @@ export default {
       for (let i = 0; i < data.models.length; i++) {
         this.Revise.modelcodes.push(data.models[i].modelCode);
       }
+      console.log(data.models);
     },
     //封装请求事件
     getUserData(page = 1) {

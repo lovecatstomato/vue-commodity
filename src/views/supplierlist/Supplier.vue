@@ -19,22 +19,24 @@
             <el-button
               type="danger"
               size="mini"
-              @click="deleteUser(scope.row.account)"
+              @click="deleteUser(scope.row.venderCode)"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
+
       <!-- 分页组件 -->
       <el-pagination background layout="prev, pager, next" :total="total">
       </el-pagination>
       <el-form v-show="updShow"> </el-form>
     </el-tab-pane>
 
+    <!-- 修改弹窗 -->
     <el-dialog title="编辑姓名" :visible.sync="dialogVisible" width="30%">
       <el-form label-width="100px" :model="Revise_Supplier">
         <el-form-item label="地址">
-          <el-input v-model="Revise_Supplier.address"/>
+          <el-input v-model="Revise_Supplier.address" />
         </el-form-item>
         <el-form-item label="联系人">
           <el-input v-model="Revise_Supplier.contactor" />
@@ -64,7 +66,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <!-- <el-button size="small" type="primary" @click="dodate">确 定</el-button> -->
+        <el-button size="small" type="primary" @click="dodate">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -128,10 +130,11 @@ export default {
         tel: "", //电话
         venderCode: "", //供应商编号
       },
+      //修改供应商列表数组
       Revise_Supplier: {
         address: "", //地址
         contactor: "", //供应商联系人
-        createDate: new Date().toISOString().substring(0, 10), //注册日期
+        createDate: "", //注册日期
         fax: "", //传真
         name: "", //供应商名称
         passWord: "", //供应商密码
@@ -151,28 +154,76 @@ export default {
       this.$axios
         .get("/main/purchase/vender/show?page=" + page)
         .then((restul) => {
-          console.log(restul);
           this.supplier = restul.list; //供应商列表数据
           this.total = restul.total;
           this.currPage = restul.pageNum;
         });
     },
-    //修改列表
+    //修改获取列表
     shows(data) {
+      let Revi = this.Revise_Supplier;
       this.dialogVisible = true;
+      Revi.address = data.address; //地址
+      Revi.contactor = data.contactor; //供应商联系人
+      Revi.createDate = data.createDate; //注册日期
+      Revi.passWord = data.passWord; //密码
+      Revi.fax = data.fax; //传真
+      Revi.name = data.name; //供应商名称
+      Revi.postCode = data.postCode; //邮政编码
+      Revi.tel = data.tel; //电话
+      Revi.venderCode = data.venderCode; //供应商编号
+      console.log(Revi.venderCode);
+    },
+    //修改确定按钮
+    dodate() {
+      //关闭窗口
+      this.dialogVisible = false;
+      //拼接数据
+      let doda = qs.stringify(this.Revise_Supplier)
+      //传入后台
+      this.$axios.post("/main/purchase/vender/update",doda).then((Resltu)=>{
+        console.log(Resltu);
+        //成功
+        if (Resltu.code == 2) {
+          //重新渲染数据
+          this.supplierlist()
+          //成功提示
+          this.$notify({
+            title:"修改成功",
+            message: Resltu.message,
+            type:"success",
+            duration:"2000",
+          });
+        }
+        //失败
+        if (Resltu.code == 3) {
+          this.supplierlist()
+          this.$notify({
+            title: '修改失败',
+            message: Resltu.message,
+            type:"success",
+            duration:"2000",
+          });
+        }
+      })
     },
     //添加保存
     addUser() {
+      //拼接数据
       let AppSu = qs.stringify(this.AppSupplier);
+      //传入后台
       this.$axios.post("/main/purchase/vender/add", AppSu).then((resu) => {
         if (resu.code == 2) {
+          //调用方法重新渲染页面
           this.supplierlist();
+          //成功提示
           this.$notify({
-            title: "成功",
+            title: "添加成功",
             message: resu.message,
             type: "success",
             duration: "2000",
           });
+          //清空列表
           this.AppSupplier.address = "";
           this.AppSupplier.contactor = "";
           this.AppSupplier.fax = "";
@@ -182,8 +233,30 @@ export default {
           this.AppSupplier.venderCode = "";
           this.AppSupplier.passWord = "";
         }
+        if (resu == 3) {
+          this.supplierlist()
+          this.$notify({
+            title: '添加失败',
+            message: resu.message,
+            type: "success",
+            duration: "2000",
+          });
+        }
       });
     },
+    deleteUser(venderCode){
+      this.$axios.post("/main/purchase/vender/delete","venderCode="+venderCode).then((deletsu) => {
+        if (deletsu.code == 2) {
+          this.supplierlist()
+          this.$notify({
+            title: '删除',
+            message: deletsu.message,
+            type: "success",
+            duration: "2000",
+          });
+        }
+      })
+    }
   },
 };
 </script>

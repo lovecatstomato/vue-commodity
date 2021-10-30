@@ -63,10 +63,17 @@ const routes = [
         }
       },
       {
-        path:'purchase/app',component:() => import('@/views/purchase/App.vue'),
+        path:'purchase/add',component:() => import('@/views/purchase/Add.vue'),
         meta:{
           menu:'采购单录入',
           name:'添加'
+        }
+      },
+      {
+        path:'purchase/addlist',component:() => import('@/views/purchase/AddList.vue'),
+        meta:{
+          menu:'采购单列表',
+          name:'列表'
         }
       }
     ]
