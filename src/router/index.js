@@ -75,6 +75,20 @@ const routes = [
           menu:'采购单列表',
           name:'列表'
         }
+      },
+      {
+        path:'purchase/ended',component:() => import('@/views/purchase/Ended.vue'),
+        meta:{
+          menu:'采购单了结',
+          name:'了结'
+        }
+      },
+      {
+        path:'purchase/inquire',component:() => import('@/views/purchase/Inquire.vue'),
+        meta:{
+          menu:'采购单查询',
+          name:'查询'
+        }
       }
     ]
   }

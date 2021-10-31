@@ -41,8 +41,8 @@
               >采购单录入</el-menu-item
             >
             <el-menu-item index="/manager/purchase/addlist">采购单列表</el-menu-item>
-            <el-menu-item index="2-4">采购单了结</el-menu-item>
-            <el-menu-item index="2-5">采购单查询</el-menu-item>
+            <el-menu-item index="/manager/purchase/ended">采购单了结</el-menu-item>
+            <el-menu-item index="/manager/purchase/inquire">采购单查询</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
