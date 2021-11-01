@@ -58,36 +58,78 @@ const routes = [
       {
         path:'supplierlist/Supplier',component:() => import('@/views/supplierlist/Supplier.vue'),
         meta:{
-          menu:'供应商列表',
-          name:'供应商'
+          menu:'采购管理',
+          name:'供应商列表'
         }
       },
       {
         path:'purchase/add',component:() => import('@/views/purchase/Add.vue'),
         meta:{
-          menu:'采购单录入',
-          name:'添加'
+          menu:'采购管理',
+          name:'采购单录入'
         }
       },
       {
         path:'purchase/addlist',component:() => import('@/views/purchase/AddList.vue'),
         meta:{
-          menu:'采购单列表',
-          name:'列表'
+          menu:'采购单管理',
+          name:'采购单列表'
         }
       },
       {
         path:'purchase/ended',component:() => import('@/views/purchase/Ended.vue'),
         meta:{
-          menu:'采购单了结',
-          name:'了结'
+          menu:'采购单管理',
+          name:'采购单了结'
         }
       },
       {
         path:'purchase/inquire',component:() => import('@/views/purchase/Inquire.vue'),
         meta:{
-          menu:'采购单查询',
-          name:'查询'
+          menu:'采购单管理',
+          name:'采购单查询'
+        }
+      },
+      {
+        path:'warehouse/stock',component:() => import('@/views/warehouse/Stock.vue'),
+        meta:{
+          menu:'仓库管理',
+          name:'入库登记'
+        }
+      },
+      {
+        path:'warehouse/inventory',component:() => import('@/views/warehouse/Inventory.vue'),
+        meta:{
+          menu:'仓库管理',
+          name:'库存盘点'
+        }
+      },
+      {
+        path:'warehouse/warinquire',component:() => import('@/views/warehouse/Warinquire.vue'),
+        meta:{
+          menu:'仓库管理',
+          name:'库存查询'
+        }
+      },
+      {
+        path:'finance/receive',component:() => import('@/views/finance/Receive.vue'),
+        meta:{
+          menu:'财务管理',
+          name:'收款登记'
+        }
+      },
+      {
+        path:'finance/payment',component:() => import('@/views/finance/Payment.vue'),
+        meta:{
+          menu:'财务管理',
+          name:'付款登记'
+        }
+      },
+      {
+        path:'finance/prinquire',component:() => import('@/views/finance/prInquire.vue'),
+        meta:{
+          menu:'财务管理',
+          name:'收付款查询'
         }
       }
     ]

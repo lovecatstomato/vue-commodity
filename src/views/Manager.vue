@@ -50,18 +50,18 @@
               <span>仓库管理</span>
             </template>
             <el-menu-item index="/manager/chart">入库登记</el-menu-item>
-            <el-menu-item index="3-1">出库登记</el-menu-item>
-            <el-menu-item index="3-2">库存盘点</el-menu-item>
-            <el-menu-item index="3-3">库存查询</el-menu-item>
+            <el-menu-item index="/manager/warehouse/stock">出库登记</el-menu-item>
+            <el-menu-item index="/manager/warehouse/inventory">库存盘点</el-menu-item>
+            <el-menu-item index="/manager/warehouse/warinquire">库存查询</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>财务管理</span>
             </template>
-            <el-menu-item index="4-1">收款登记</el-menu-item>
-            <el-menu-item index="4-2">付款登记</el-menu-item>
-            <el-menu-item index="4-3">收付款查询</el-menu-item>
+            <el-menu-item index="/manager/finance/receive">收款登记</el-menu-item>
+            <el-menu-item index="/manager/finance/payment">付款登记</el-menu-item>
+            <el-menu-item index="/manager/finance/prinquire">收付款查询</el-menu-item>
           </el-submenu>
           <el-submenu index="5">
             <template slot="title">
