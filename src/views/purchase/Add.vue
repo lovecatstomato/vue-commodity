@@ -201,7 +201,7 @@ export default {
       this.dialogProductVisible = true;
       this.loadProduct = true;
       //获取明细产品管理数据
-      this.$axios.get("/main/sell/product/all").then((result) => {
+      this.$axios.get("/main/sell/product/all").then(result => {
         this.currPage = result;
         this.loadProduct = false;
       });
@@ -217,7 +217,7 @@ export default {
     },
     //获取供应商列表
     suppliers() {
-      this.$axios.get("/main/purchase/vender/all").then((resu) => {
+      this.$axios.get("/main/purchase/vender/all").then(resu => {
         this.supplier = resu;
       });
     },
