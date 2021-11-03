@@ -75,10 +75,10 @@
               >产品管理</el-menu-item
             >
             <el-menu-item index="5-1">客户管理</el-menu-item>
-            <el-menu-item index="5-2">销售单录入</el-menu-item>
-            <el-menu-item index="5-3">销售单列表</el-menu-item>
-            <el-menu-item index="5-4">销售单了结</el-menu-item>
-            <el-menu-item index="5-5">销售单查询</el-menu-item>
+            <el-menu-item index="/manager/sales/input">销售单录入</el-menu-item>
+            <el-menu-item index="/manager/sales/salesorders">销售单列表</el-menu-item>
+            <el-menu-item index="/manager/sales/closed">销售单了结</el-menu-item>
+            <el-menu-item index="/manager/sales/management">销售单查询</el-menu-item>
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">

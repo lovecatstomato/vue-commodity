@@ -20,13 +20,16 @@
     <el-dialog :visible.sync="dialogVisible" width="30%">
       <el-form label-width="100px" :model="Revise_Supplier">
         <el-form-item label="产品原始数量">
-          <el-input v-model="Revise_Supplier.originNum" />
-        </el-form-item>
-        <el-form-item label="变化数量">
           <el-input v-model="Revise_Supplier.num" />
         </el-form-item>
+        <el-form-item label="变化数量">
+          <el-input v-model="Revise_Supplier.originNum" />
+        </el-form-item>
         <el-form-item label="变化类型">
-          <el-input v-model="Revise_Supplier.type" />
+          <el-select v-model="Revise_Supplier.type">
+            <el-option label="损耗" value="损耗"></el-option>
+            <el-option label="盘余" value="盘余"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="变化原因">
           <el-input
@@ -98,13 +101,31 @@ export default {
     Addlist(lsit) {
       console.log(lsit);
       this.dialogVisible = true;
-      lsit.productCode = this.Revise_Supplier.productCode;
+      this.Revise_Supplier = lsit;
       console.log(this.Revise_Supplier);
     },
     dodate() {
-      
       this.dialogVisible = false;
       console.log(this.Revise_Supplier);
+      this.$axios
+        .get("/main/stock/checkstock", {
+          params: {
+            productCode: this.Revise_Supplier.productCode,
+            originNum: this.Revise_Supplier.num,
+            type:this.Revise_Supplier.type,
+            description: this.Revise_Supplier.description,
+            num:this.Revise_Supplier.originNum,
+            page: this.page,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.lists = res.list;
+          this.total = res.total;
+          this.currPage = res.pageNum;
+          // console.log(this.lists);
+          this.que();
+        });
     },
   },
 };

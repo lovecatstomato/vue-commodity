@@ -137,6 +137,34 @@ const routes = [
         }
       },
       {
+        path:'sales/input',component:() => import('@/views/Sales/Input.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'销售单录入'
+        }
+      },
+      {
+        path:'sales/salesorders',component:() => import('@/views/Sales/SalesOrders.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'销售单列表'
+        }
+      },
+      {
+        path:'sales/closed',component:() => import('@/views/Sales/closed.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'销售单了结'
+        }
+      },
+      {
+        path:'sales/management',component:() => import('@/views/Sales/management.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'销售查询'
+        }
+      },
+      {
         path: 'business/purchasereport', component: () => import('@/views/Business/Purchasereport.vue'),
         meta: {
           menu: '业务报表',

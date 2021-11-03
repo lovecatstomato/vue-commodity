@@ -42,7 +42,10 @@ export default {
   data() {
     return {
       updShow: false,
-      formInline: [],//查询数组
+      formInline: {
+        productCode:"",
+        name:""
+      },//查询数组
       lists: [],//显示数组
       total: 0, // 分页的数据总数量
       currPage: 1,
@@ -53,7 +56,8 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage
+      this.que();
     },
     //查询按钮
     que() {
@@ -62,7 +66,7 @@ export default {
           params: {
             productCode:this.formInline.productCode,
             name:this.formInline.name,
-            page: this.page,
+            page: this.page
           },
         })
         .then((res) => {

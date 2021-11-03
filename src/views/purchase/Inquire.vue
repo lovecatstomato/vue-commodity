@@ -92,8 +92,9 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
+      this.page = currPage
       // console.log(currPage);
-      this.onSubmit(currPage);
+      this.onSubmit();
     },
     onSubmit() {
       this.$axios
