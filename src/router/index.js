@@ -75,8 +75,8 @@ const routes = [
       },
       {
         path: 'purchase/addlist/edit', component: () => import('@/views/purchase/Edit.vue'),
-        meta:{
-          menu:'采购单列表',
+        meta: {
+          menu: '采购单列表',
           name: '采购单列表修改'
         }
       },
@@ -134,6 +134,48 @@ const routes = [
         meta: {
           menu: '财务管理',
           name: '收付款查询'
+        }
+      },
+      {
+        path: 'business/purchasereport', component: () => import('@/views/Business/Purchasereport.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度采购报表'
+        }
+      },
+      {
+        path: 'business/salesreport', component: () => import('@/views/Business/SalesReport.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度销售报表'
+        }
+      },
+      {
+        path: 'business/inboundreport', component: () => import('@/views/Business/Inboundreport.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度入库报表'
+        }
+      },
+      {
+        path: 'business/outboundreport', component: () => import('@/views/Business/Outboundreport.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度出库报表'
+        }
+      },
+      {
+        path: 'business/inventoryreport', component: () => import('@/views/Business/Inventoryreport.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度库存报表'
+        }
+      },
+      {
+        path: 'business/expenditure', component: () => import('@/views/Business/Expenditure.vue'),
+        meta: {
+          menu: '业务报表',
+          name: '月度收支报表'
         }
       }
     ]

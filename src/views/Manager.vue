@@ -85,12 +85,12 @@
               <i class="el-icon-location"></i>
               <span>业务报表</span>
             </template>
-            <el-menu-item index="6-1">月度采购报表</el-menu-item>
-            <el-menu-item index="6-2">月度销售报表</el-menu-item>
-            <el-menu-item index="6-3">月度入库报表</el-menu-item>
-            <el-menu-item index="6-4">月度出库报表</el-menu-item>
-            <el-menu-item index="6-5">月度库存报表</el-menu-item>
-            <el-menu-item index="6-6">月度收支报表</el-menu-item>
+            <el-menu-item index="/manager/business/purchasereport">月度采购报表</el-menu-item>
+            <el-menu-item index="/manager/business/salesreport">月度销售报表</el-menu-item>
+            <el-menu-item index="/manager/business/inboundreport">月度入库报表</el-menu-item>
+            <el-menu-item index="/manager/business/outboundreport">月度出库报表</el-menu-item>
+            <el-menu-item index="/manager/business/inventoryreport">月度库存报表</el-menu-item>
+            <el-menu-item index="/manager/business/expenditure">月度收支报表</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
