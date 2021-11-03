@@ -19,7 +19,9 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button type="primary" size="mini" @click="shows(scope.row)">入库</el-button>
+          <el-button type="primary" size="mini" @click="shows(scope.row)"
+            >入库</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -48,6 +50,7 @@ export default {
       updShow: false,
       total: 0, // 分页的数据总数量
       currPage: 1,
+      poId: "",
     };
   },
   filters: {
@@ -67,6 +70,7 @@ export default {
     },
   },
   methods: {
+    //页数
     pageChange(currPage) {
       this.Delivery(currPage);
       this.Payment(currPage);
@@ -85,7 +89,6 @@ export default {
           },
         })
         .then((resu) => {
-          console.log(resu);
           this.tabPosition = resu.list;
         });
     },
@@ -117,8 +120,38 @@ export default {
           },
         })
         .then((resua) => {
-          console.log(resua);
           this.tabPosition = resua.list;
+        });
+    },
+    //入库
+    shows(Warehousing) {
+      this.poId = Warehousing.poId;
+      console.log(this.poId);
+      this.payType = Warehousing.payType;
+      console.log(this.payType);
+      this.$axios
+        .post(
+          "/main/stock/instock",
+          `poId=${this.poId}&payType=${this.payType}&page=${this.page}`
+        )
+        .then((restock) => {
+          console.log(restock);
+          if (restock == 2) {
+            this.$notify({
+              title: "成功",
+              message: restock.message,
+              type: "success",
+              duration: "2000",
+            });
+          }
+          if (restock == 3) {
+            this.$notify({
+              title: "失败",
+              message: restock.message,
+              type: "success",
+              duration: "2000",
+            });
+          }
         });
     },
   },

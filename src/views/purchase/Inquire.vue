@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 查询窗口 -->
     <el-form :inline="true" :model="formInline">
       <el-form-item label="采购单编号">
         <el-input v-model="formInline.poId" placeholder="采购单编号"></el-input>
@@ -30,6 +31,7 @@
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
+    <!-- 显示 -->
     <el-table :data="form" border style="width: 100%">
       <el-table-column prop="poId" label="采购单编号"></el-table-column>
       <el-table-column prop="venderCode" label="供应商编号"></el-table-column>
@@ -43,14 +45,14 @@
     </el-table>
     <!-- 分页组件 -->
     <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        :current-page="currPage"
-        @current-change="pageChange"
-      >
-      </el-pagination>
-      <el-form v-show="updShow"> </el-form>
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :current-page="currPage"
+      @current-change="pageChange"
+    >
+    </el-pagination>
+    <el-form v-show="updShow"> </el-form>
   </div>
 </template>
 
@@ -88,10 +90,10 @@ export default {
     },
   },
   methods: {
-     // 请求分页数据
+    // 请求分页数据
     pageChange(currPage) {
       // console.log(currPage);
-      this.onSubmit(currPage)
+      this.onSubmit(currPage);
     },
     onSubmit() {
       this.$axios
@@ -101,11 +103,13 @@ export default {
             status: this.formInline.status,
             payType: this.formInline.payType,
             venderCode: this.formInline.venderCode,
-            page:this.page
+            page: this.page,
           },
         })
         .then((resu) => {
           this.form = resu.list;
+          this.total = resu.total;
+          this.currPage = resu.pageNum;
         });
     },
   },
