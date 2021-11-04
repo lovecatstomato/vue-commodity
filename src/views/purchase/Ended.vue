@@ -166,14 +166,12 @@ export default {
     },
     //了结
     shows(Warehousing) {
-      // console.log(Warehousing);
-      // this.payType = Warehousing.payType;
-      // this.status = Warehousing.status;
+      this.poId = Warehousing.poId
+      console.log(Warehousing.poId);
+      this.payType = Warehousing.payType;
+      this.status = Warehousing.status;
       this.$axios
-        .post(
-          "/main/purchase/pomain/end",
-          {params: { payType: this.payType, page: this.page, status: this.status }}
-        )
+        .post("/main/purchase/pomain/end", `poId=${this.poId}&payType=${this.payType}&page=${this.page}`)
         .then((restock) => {
           console.log(restock);
           if (restock.code == 2) {

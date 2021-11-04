@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 查询窗口 -->
-    <el-form :inline="true" :model="formInline">
+    <el-form :inline="true">
       <el-date-picker
         v-model="value2"
         type="month"
@@ -14,14 +14,27 @@
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
-
+    <el-form>
+    
+    </el-form>
     {{ this.lis.receCount }}:收款次数,{{ this.lis.recePrice }}:收款总金额,
     {{this.lis.payCount}}:付款次数,{{ this.lis.payPrice }}:付款总金额
+
+    <el-form>
+      <el-form-item>
+        <el-button type="primary" @click="Receive">收款明细</el-button>
+        <el-button type="primary" @click="Payment">付款明细</el-button>
+      </el-form-item>
+    </el-form>
     <!-- 显示 -->
     <el-table :data="lists" style="width: 100%">
-      <el-table-column prop="ProductCode" label="产品编号"></el-table-column>
-      <el-table-column prop="name" label="供应商姓名"></el-table-column>
-      <el-table-column prop="num" label="数量"></el-table-column>
+      <el-table-column prop="poId" label="产品编号"></el-table-column>
+      <el-table-column prop="account" label="供应商姓名"></el-table-column>
+      <el-table-column prop="createTime" label="数量"></el-table-column>
+      <el-table-column prop="pay_price" label="数量"></el-table-column>
+       <el-table-column prop="status" label="处理状态" width="90">
+        <template slot-scope="scope">{{ scope.row.status | sta }}</template>
+      </el-table-column>
     </el-table>
     <!-- 分页组件 -->
     <el-pagination
@@ -41,7 +54,7 @@ export default {
   data() {
     return {
       updShow: false,
-      formInline: [], //查询数组
+      // formInline: [], //查询数组
       lists: [], //显示数组
       lis: [],
       total: 0, // 分页的数据总数量
@@ -69,7 +82,10 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage
+      this.que();
+      this.Receive();
+      this.Payment()
     },
     //查询按钮
     que() {
@@ -82,14 +98,50 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.lis = res;
-          this.lists = res.details.list;
+          // this.lists = res.details.list;
           this.total = res.total;
           this.currPage = res.pageNum;
+          // console.log(this.lists);
+        });
+    },
+    // 收款明细
+    Receive(){
+      this.$axios
+        .get("/main/report/payment/detail/receipt", {
+          params: {
+            time: this.value2,
+            page: this.page,
+          },
+        })
+        .then((resu) => {
+          // console.log(resu);
+          // this.lis = resu;
+          this.lists = resu.list;
+          this.total = resu.total;
+          this.currPage = resu.pageNum;
           console.log(this.lists);
         });
     },
+    // 付款明细
+    Payment(){
+      this.$axios
+        .get("/main/report/payment/detail/pay", {
+          params: {
+            time: this.value2,
+            page: this.page,
+          },
+        })
+        .then((resus) => {
+          // console.log(resus);
+          // this.lis = resus;
+          this.lists = resus.list;
+          this.total = resus.total;
+          this.currPage = resus.pageNum;
+          // console.log(this.lists);
+        });
+    }
   },
 };
 </script>

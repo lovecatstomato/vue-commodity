@@ -8,15 +8,20 @@
     </el-button-group>
     <!-- 显示 -->
     <el-table :data="tabPosition" style="width: 100%">
-      <el-table-column prop="soId" label="销售单编号"></el-table-column>
-      <el-table-column prop="account" label="创建用户"></el-table-column>
-      <el-table-column prop="customerCode" label="客户编号"></el-table-column>
-      <!-- <el-table-column prop="venderName" label="供应商名字"></el-table-column> -->
-      <el-table-column prop="payType" label="付款方式">
-        <template v-slot="scope">{{ scope.row.payType | typ }}</template>
+      <el-table-column type="index" label="序号" width="60"></el-table-column>
+      <el-table-column prop="soId" label="销售单编号" width="140"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
+      <el-table-column prop="customerName" label="客户" width="100"></el-table-column>
+      <el-table-column prop="account" label="创建用户" width="110"></el-table-column>
+      <el-table-column prop="tipFee" label="附加费用" width="90"></el-table-column>
+      <el-table-column prop="productTotal" label="产品购物总价" width="120"></el-table-column>
+      <el-table-column prop="soTotal" label="销售单总价" width="100"></el-table-column>
+      <el-table-column prop="payType" label="付款方式" width="90">
+        <template slot-scope="scope">{{scope.row.payType|typ}}</template>
       </el-table-column>
-      <el-table-column prop="status" label="处理状态">
-        <template v-slot="scope">{{ scope.row.status | sta }}</template>
+      <el-table-column prop="prePayFee" label="最低预付款金额" width="120"></el-table-column>
+      <el-table-column prop="status" label="处理状态" width="90">
+        <template slot-scope="scope">{{scope.row.status|sta}}</template>
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
@@ -51,7 +56,7 @@ export default {
       updShow: false,
       total: 0, // 分页的数据总数量
       currPage: 1,
-      poId: "",
+      soId: "",
     };
   },
   filters: {
@@ -127,21 +132,15 @@ export default {
     },
     //出库
     shows(Warehousing) {
-      this.poId = Warehousing.poId;
-      console.log(this.poId);
+      this.soId = Warehousing.soId;
+      console.log(this.soId);
       this.payType = Warehousing.payType;
       console.log(this.payType);
       this.$axios
-        .post("/main/stock/outstock", {
-          params: {
-            poId: this.poId,
-            payType: this.payType,
-            page: this.page,
-          },
-        })
+        .post("/main/stock/outstock", `soId=${this.soId}&payType=${this.payType}&page=${this.page}` )
         .then((restock) => {
           console.log(restock);
-          if (restock == 2) {
+          if (restock.code == 2) {
             this.$notify({
               title: "成功",
               message: restock.message,
@@ -149,7 +148,7 @@ export default {
               duration: "2000",
             });
           }
-          if (restock == 3) {
+          if (restock.code == 3) {
             this.$notify({
               title: "失败",
               message: restock.message,

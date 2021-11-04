@@ -1,7 +1,7 @@
 <template>
   <el-tabs type="border-card">
-    <!-- 供应商列表 -->
-    <el-tab-pane label="供应商列表">
+    <!-- 客户列表 -->
+    <el-tab-pane label="客户列表">
       <el-table :data="supplier" border style="width: 100%">
         <el-table-column prop="address" label="地址"> </el-table-column>
         <el-table-column prop="contactor" label="联系人"></el-table-column>
@@ -12,7 +12,7 @@
         <el-table-column prop="tel" label="电话"></el-table-column>
         <el-table-column
           prop="customerCode"
-          label="供应商编号"
+          label="客户编号"
         ></el-table-column>
         <el-table-column label="操作" min-width="150px">
           <template v-slot="scope">
@@ -73,7 +73,7 @@
       </span>
     </el-dialog>
 
-    <!-- 供应商添加 -->
+    <!-- 客户添加 -->
     <el-tab-pane label="添加客户">
       <el-form label-width="100px" style="width: 600px" :model="AppSupplier">
         <el-form-item label="地址">
