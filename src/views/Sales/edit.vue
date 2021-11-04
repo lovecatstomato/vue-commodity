@@ -1,19 +1,19 @@
 <template>
   <div>
     <!-- 基本信息 -->
-    <el-form :inline="true" :model="poinfo" label-width="140px">
+    <el-form :inline="true" :model="ReviseList" label-width="140px">
       <el-form-item label="采购单编号" prop="poId">
-        <el-input v-model="poinfo.poId" :disabled="true" />
+        <el-input v-model="ReviseList.soId" :disabled="true" />
       </el-form-item>
       <el-form-item label="创建用户">
-        <el-input v-model="poinfo.account" :disabled="true" />
+        <el-input v-model="ReviseList.account" :disabled="true" />
       </el-form-item>
 
-      <el-form-item label="选择供应商" prop="name">
-        <el-select placeholder="请选择" v-model="poinfo.venderCode">
+      <el-form-item label="选择客户" prop="name">
+        <el-select placeholder="请选择" v-model="ReviseList.customerCode">
           <el-option
             v-for="item in supplier"
-            :value="item.venderCode"
+            :value="item.customerCode"
             :key="item.name"
           >
             {{ item.name }}
@@ -22,29 +22,29 @@
       </el-form-item>
 
       <el-form-item label="创建时间">
-        <el-input v-model="poinfo.createTime" :disabled="true" />
+        <el-input v-model="ReviseList.createTime" :disabled="true" />
       </el-form-item>
       <el-form-item label="附加费用">
-        <el-input v-model="poinfo.tipFee" />
+        <el-input v-model="ReviseList.tipFee" />
       </el-form-item>
       <el-form-item label="付款方式">
-        <el-select v-model="poinfo.payType" size="mini">
+        <el-select v-model="ReviseList.payType" size="mini">
           <el-option border :value="1" label="货到付款"></el-option>
           <el-option border :value="2" label="款到发货"></el-option>
           <el-option border :value="3" label="预付款到发货"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="产品总价">
-        <el-input v-model="poinfo.productTotal" />
+        <el-input v-model="ReviseList.productTotal" />
       </el-form-item>
       <el-form-item label="采购总价">
-        <el-input v-model="poinfo.poTotal" />
+        <el-input v-model="ReviseList.poTotal" />
       </el-form-item>
       <el-form-item label="最低预付款金额">
-        <el-input v-model="poinfo.prePayFee" :readonly="isRead" />
+        <el-input v-model="ReviseList.prePayFee" />
       </el-form-item>
       <el-form-item label="采购单">
-        <el-radio-group v-model="poinfo.status">
+        <el-radio-group v-model="ReviseList.status">
           <el-radio :label="1">新增</el-radio>
           <el-radio :label="2">已收货</el-radio>
           <el-radio :label="3">已付款</el-radio>
@@ -57,15 +57,13 @@
           type="textarea"
           :rows="2"
           placeholder="请输入内容"
-          v-model="poinfo.remark"
+          v-model="ReviseList.remark"
         >
         </el-input>
       </el-form-item>
-
-      <!-- 添加明细 -->
       <el-form-item>
         <el-button type="success" @click="addItem">添加明细</el-button>
-        <el-table :data="poinfo.poitems" border style="width: 1000px">
+        <el-table :data="ReviseList.soitems" border style="width: 1000px">
           <el-table-column type="index" label="序号" />
           <el-table-column label="产品编号">
             <template v-slot="scope">
@@ -78,7 +76,7 @@
           </el-table-column>
           <el-table-column label="产品名称">
             <template v-slot="scope">
-              <el-input v-model="scope.row.name" />
+              <el-input v-model="scope.row.productName" />
             </template>
           </el-table-column>
           <el-table-column label="数量单位">
@@ -118,7 +116,6 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-button type="success" @click="submit">提交</el-button>
     </el-form>
 
     <!-- 弹出消息 -->
@@ -146,13 +143,12 @@
         <el-table-column property="unitName" label="数量单位"></el-table-column>
       </el-table>
     </el-dialog>
+
+    <el-button type="" @click="tain">修改</el-button>
   </div>
 </template>
 
 <script>
-import { generateId, currTime } from "@/utils/date";
-import { mapState } from "vuex";
-
 export default {
   data() {
     return {
@@ -160,40 +156,39 @@ export default {
       selectProductIndex: -1,
       loadProduct: false,
       dialogProductVisible: false,
-      //添加采购单列表
-      poinfo: {
-        poId: generateId(), //采购单编号
-        venderCode: "", //供应商编号
-        account: "", //创建用户
-        createTime: currTime(), //时间
-        tipFee: 0, //附加费用
-        productTotal: "", //产品总价
-        poTotal: "", //采购总价
-        payType: 1, //付款方式
-        prePayFee: 0, //最低预付款金额
-        status: 1, //采购单状态
-        remark: "", // 备注
-        poitems: [], // 采购产品明细
-      },
-      //单独获取的数据必须是数组
-      //供应商列表
-      supplier: [],
-      //产品管理列表
-      currPage: [],
+      ReviseList: {
+          soitems: []
+      }, //修改数组
+      supplier: [], //供应商列表
+      currPage: [], //产品管理列表
     };
   },
-  //计算属性
-  computed: {
-    ...mapState(["account"]),
-  },
+  //生命周期
   created() {
-    this.suppliers(); // 渲染供应商列表
-    this.poinfo.account = this.account;
+    this.Purchase(); //渲染列表
+    this.Su();
+    this.suppliers();
   },
+  //按钮属性
   methods: {
+    //明细添加按钮
+    addItem() {
+      this.ReviseList.soitems.push({
+        productCode: "",
+        productName:"",
+        unitName: "",
+        unitPrice: 0,
+        num: 0,
+        itemPrice: 0,
+      });
+    },
     // 选择商品确定按钮
     Obtain() {
       this.dialogProductVisible = false;
+    },
+    //明细删除按钮
+    delet(index) {
+      this.ReviseList.soitems.splice(index, 1);
     },
     //选择商品
     showProductDialog(idx) {
@@ -201,7 +196,7 @@ export default {
       this.dialogProductVisible = true;
       this.loadProduct = true;
       //获取明细产品管理数据
-      this.$axios.get("/main/sell/product/all").then(result => {
+      this.$axios.get("/main/sell/product/all").then((result) => {
         console.log(result);
         this.currPage = result;
         this.loadProduct = false;
@@ -209,37 +204,45 @@ export default {
     },
     //显示选中行的数据
     selectProduct(currentRow) {
+        console.log(currentRow);
       //currentRow参数是选中行的值
       //获得选中明细的数据
-      let item = this.poinfo.poitems[this.selectProductIndex];
+      let item = this.ReviseList.soitems[this.selectProductIndex];
       let { productCode, name, unitName } = currentRow;
       //将选中行的值负值给选中明细
-      Object.assign(item, { productCode, name, unitName });
+      Object.assign(item, { productCode, productName: name, unitName });
     },
-    //获取供应商列表
+    //获取客户列表
     suppliers() {
-      this.$axios.get("/main/purchase/vender/all").then(resu => {
-        this.supplier = resu;
+      this.$axios.get("/main/sell/customer/show").then((resu) => {
+        console.log(resu);
+        this.supplier = resu.list;
       });
     },
-    //明细添加按钮
-    addItem() {
-      this.poinfo.poitems.push({
-        productCode: "",
-        unitName: "",
-        unitPrice: 0,
-        num: 0,
-        itemPrice: 0,
-      });
+    //采购单列表数据封装请求事件
+    Purchase() {
+      this.ReviseList = {...this.$route.query.data, soitems: []}; //获取传参过来的数值
     },
-    //明细删除按钮
-    delet(index) {
-      this.poinfo.poitems.splice(index, 1);
-    },
-    //提交
-    submit() {
+    //明细
+    Su() {
+      let soId = this.ReviseList.soId;
       this.$axios
-        .post("/main/purchase/pomain/add", JSON.stringify(this.poinfo), {
+        .get("/main/sell/somain/queryItem", {
+          params: {
+            soId: soId,
+          },
+        })
+        .then((res) => {
+          // console.log(this.ReviseList.venderCode);
+        //   console.log(res);
+          this.ReviseList.soitems = res;
+        });
+    },
+    //添加
+    tain() {
+      // 确定关闭
+      this.$axios
+        .post("/main/sell/somain/update", JSON.stringify(this.ReviseList), {
           headers: {
             "Content-Type": "application/json",
           },
@@ -253,7 +256,6 @@ export default {
               duration: "2000",
             });
           } else if (re.code == 3) {
-            console.log(this.poinfo);
             this.$notify({
               title: "失败",
               message: re.message,
@@ -267,9 +269,9 @@ export default {
   //监听
   watch: {
     //预付款金额监听
-    "poinfo.payType": {
+    "ReviseList.payType": {
       handler(val) {
-        this.poinfo.prePayFee = 0;
+        this.ReviseList.prePayFee = 0;
         if (val === 3) {
           this.isRead = false; // 不是只读，可编辑
         } else {
@@ -278,7 +280,7 @@ export default {
       },
     },
     //产品总价监听
-    "poinfo.poitems": {
+    "ReviseList.soitems": {
       handler(val) {
         let total = 0;
         for (let i = 0; i < val.length; i++) {
@@ -286,16 +288,16 @@ export default {
           val[i].itemPrice = Number(val[i].num * val[i].unitPrice);
         }
 
-        this.poinfo.productTotal = total;
-        this.poinfo.poTotal = this.poinfo.productTotal;
+        this.ReviseList.productTotal = total;
+        this.ReviseList.poTotal = this.ReviseList.productTotal;
       },
 
       deep: true, // 深度监听，当监听的对象的属性变化时，也会触发监听器
     },
     // 附加费用监听
-    "poinfo.tipFee": {
+    "ReviseList.tipFee": {
       handler(val) {
-        this.poinfo.poTotal = Number(val) + Number(this.poinfo.productTotal);
+        this.ReviseList.poTotal = Number(val) + Number(this.ReviseList.productTotal);
       },
     },
   },

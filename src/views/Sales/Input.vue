@@ -2,18 +2,18 @@
   <div>
     <!-- 基本信息 -->
     <el-form :inline="true" :model="poinfo" label-width="140px">
-      <el-form-item label="采购单编号" prop="poId">
+      <el-form-item label="销售单编号" prop="poId">
         <el-input v-model="poinfo.soId" :disabled="true" />
       </el-form-item>
       <el-form-item label="创建用户">
         <el-input v-model="poinfo.account" :disabled="true" />
       </el-form-item>
 
-      <el-form-item label="选择供应商" prop="name">
-        <el-select placeholder="请选择" v-model="poinfo.venderCode">
+      <el-form-item label="选择客户" prop="name">
+        <el-select placeholder="请选择" v-model="poinfo.customerCode">
           <el-option
             v-for="item in supplier"
-            :value="item.venderCode"
+            :value="item.customerCode"
             :key="item.name"
           >
             {{ item.name }}
@@ -37,8 +37,8 @@
       <el-form-item label="产品总价">
         <el-input v-model="poinfo.productTotal" />
       </el-form-item>
-      <el-form-item label="采购总价">
-        <el-input v-model="poinfo.poTotal" />
+      <el-form-item label="销售单总价">
+        <el-input v-model="poinfo.soTotal" />
       </el-form-item>
       <el-form-item label="最低预付款金额">
         <el-input v-model="poinfo.prePayFee" :readonly="isRead" />
@@ -65,7 +65,7 @@
       <!-- 添加明细 -->
       <el-form-item>
         <el-button type="success" @click="addItem">添加明细</el-button>
-        <el-table :data="poinfo.poitems" border style="width: 1000px">
+        <el-table :data="poinfo.soitems" border style="width: 1000px">
           <el-table-column type="index" label="序号" />
           <el-table-column label="产品编号">
             <template v-slot="scope">
@@ -187,7 +187,7 @@ export default {
     ...mapState(["account"]),
   },
   created() {
-    this.suppliers(); // 渲染供应商列表
+    this.suppliers(); // 渲染客户列表
     this.poinfo.account = this.account;
   },
   methods: {
@@ -201,30 +201,34 @@ export default {
       this.dialogProductVisible = true;
       this.loadProduct = true;
       //获取明细产品管理数据
+      // console.log(1);
       this.$axios.get("/main/sell/product/all").then(result => {
+        // console.log(result);
         this.currPage = result;
         this.loadProduct = false;
+        // console.log(this.currPage);
       });
     },
     //显示选中行的数据
     selectProduct(currentRow) {
       //currentRow参数是选中行的值
       //获得选中明细的数据
-      let item = this.poinfo.poitems[this.selectProductIndex];
+      let item = this.poinfo.soitems[this.selectProductIndex];
       let { productCode, name, unitName } = currentRow;
       //将选中行的值负值给选中明细
       Object.assign(item, { productCode, name, unitName });
     },
-    //获取供应商列表
+    //获取客户列表
     suppliers() {
-      this.$axios.get("/main/purchase/vender/all").then(resu => {
-        this.supplier = resu;
+      this.$axios.get("/main/sell/customer/show").then(resu => {
+        // console.log(resu);
+        this.supplier = resu.list;
       });
     },
     //明细添加按钮
     addItem() {
-      this.poinfo.poitems.push({
-        productCode: "",
+      this.poinfo.soitems.push({
+        customerCode: "",
         unitName: "",
         unitPrice: 0,
         num: 0,
@@ -233,12 +237,12 @@ export default {
     },
     //明细删除按钮
     delet(index) {
-      this.poinfo.poitems.splice(index, 1);
+      this.poinfo.soitems.splice(index, 1);
     },
     //提交
     submit() {
       this.$axios
-        .post("/main/purchase/pomain/add", JSON.stringify(this.poinfo), {
+        .post("/main/sell/somain/add", JSON.stringify(this.poinfo), {
           headers: {
             "Content-Type": "application/json",
           },
@@ -251,6 +255,7 @@ export default {
               type: "success",
               duration: "2000",
             });
+            
           } else if (re.code == 3) {
             console.log(this.poinfo);
             this.$notify({
@@ -277,7 +282,7 @@ export default {
       },
     },
     //产品总价监听
-    "poinfo.poitems": {
+    "poinfo.soitems": {
       handler(val) {
         let total = 0;
         for (let i = 0; i < val.length; i++) {
@@ -286,7 +291,7 @@ export default {
         }
 
         this.poinfo.productTotal = total;
-        this.poinfo.poTotal = this.poinfo.productTotal;
+        this.poinfo.soTotal = this.poinfo.productTotal;
       },
 
       deep: true, // 深度监听，当监听的对象的属性变化时，也会触发监听器
@@ -294,7 +299,7 @@ export default {
     // 附加费用监听
     "poinfo.tipFee": {
       handler(val) {
-        this.poinfo.poTotal = Number(val) + Number(this.poinfo.productTotal);
+        this.poinfo.soTotal = Number(val) + Number(this.poinfo.productTotal);
       },
     },
   },

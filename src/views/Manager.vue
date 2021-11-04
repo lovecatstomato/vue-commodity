@@ -40,9 +40,15 @@
             <el-menu-item index="/manager/purchase/add"
               >采购单录入</el-menu-item
             >
-            <el-menu-item index="/manager/purchase/addlist">采购单列表</el-menu-item>
-            <el-menu-item index="/manager/purchase/ended">采购单了结</el-menu-item>
-            <el-menu-item index="/manager/purchase/inquire">采购单查询</el-menu-item>
+            <el-menu-item index="/manager/purchase/addlist"
+              >采购单列表</el-menu-item
+            >
+            <el-menu-item index="/manager/purchase/ended"
+              >采购单了结</el-menu-item
+            >
+            <el-menu-item index="/manager/purchase/inquire"
+              >采购单查询</el-menu-item
+            >
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
@@ -50,18 +56,30 @@
               <span>仓库管理</span>
             </template>
             <el-menu-item index="/manager/chart">入库登记</el-menu-item>
-            <el-menu-item index="/manager/warehouse/stock">出库登记</el-menu-item>
-            <el-menu-item index="/manager/warehouse/inventory">库存盘点</el-menu-item>
-            <el-menu-item index="/manager/warehouse/warinquire">库存查询</el-menu-item>
+            <el-menu-item index="/manager/warehouse/stock"
+              >出库登记</el-menu-item
+            >
+            <el-menu-item index="/manager/warehouse/inventory"
+              >库存盘点</el-menu-item
+            >
+            <el-menu-item index="/manager/warehouse/warinquire"
+              >库存查询</el-menu-item
+            >
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>财务管理</span>
             </template>
-            <el-menu-item index="/manager/finance/receive">收款登记</el-menu-item>
-            <el-menu-item index="/manager/finance/payment">付款登记</el-menu-item>
-            <el-menu-item index="/manager/finance/prinquire">收付款查询</el-menu-item>
+            <el-menu-item index="/manager/finance/receive"
+              >收款登记</el-menu-item
+            >
+            <el-menu-item index="/manager/finance/payment"
+              >付款登记</el-menu-item
+            >
+            <el-menu-item index="/manager/finance/prinquire"
+              >收付款查询</el-menu-item
+            >
           </el-submenu>
           <el-submenu index="5">
             <template slot="title">
@@ -74,23 +92,43 @@
             <el-menu-item index="/manager/catgory/categorylist"
               >产品管理</el-menu-item
             >
-            <el-menu-item index="5-1">客户管理</el-menu-item>
+            <el-menu-item index="/manager/sales/customer"
+              >客户管理</el-menu-item
+            >
             <el-menu-item index="/manager/sales/input">销售单录入</el-menu-item>
-            <el-menu-item index="/manager/sales/salesorders">销售单列表</el-menu-item>
-            <el-menu-item index="/manager/sales/closed">销售单了结</el-menu-item>
-            <el-menu-item index="/manager/sales/management">销售单查询</el-menu-item>
+            <el-menu-item index="/manager/sales/salesorders"
+              >销售单列表</el-menu-item
+            >
+            <el-menu-item index="/manager/sales/closed"
+              >销售单了结</el-menu-item
+            >
+            <el-menu-item index="/manager/sales/management"
+              >销售单查询</el-menu-item
+            >
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>业务报表</span>
             </template>
-            <el-menu-item index="/manager/business/purchasereport">月度采购报表</el-menu-item>
-            <el-menu-item index="/manager/business/salesreport">月度销售报表</el-menu-item>
-            <el-menu-item index="/manager/business/inboundreport">月度入库报表</el-menu-item>
-            <el-menu-item index="/manager/business/outboundreport">月度出库报表</el-menu-item>
-            <el-menu-item index="/manager/business/inventoryreport">月度库存报表</el-menu-item>
-            <el-menu-item index="/manager/business/expenditure">月度收支报表</el-menu-item>
+            <el-menu-item index="/manager/business/purchasereport"
+              >月度采购报表</el-menu-item
+            >
+            <el-menu-item index="/manager/business/salesreport"
+              >月度销售报表</el-menu-item
+            >
+            <el-menu-item index="/manager/business/inboundreport"
+              >月度入库报表</el-menu-item
+            >
+            <el-menu-item index="/manager/business/outboundreport"
+              >月度出库报表</el-menu-item
+            >
+            <el-menu-item index="/manager/business/inventoryreport"
+              >月度库存报表</el-menu-item
+            >
+            <el-menu-item index="/manager/business/expenditure"
+              >月度收支报表</el-menu-item
+            >
           </el-submenu>
         </el-menu>
       </el-aside>

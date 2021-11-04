@@ -137,6 +137,13 @@ const routes = [
         }
       },
       {
+        path:'sales/customer',component:() => import('../views/Sales/Customer.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'客户管理'
+        }
+      },
+      {
         path:'sales/input',component:() => import('@/views/Sales/Input.vue'),
         meta:{
           menu:'销售管理',
@@ -148,6 +155,13 @@ const routes = [
         meta:{
           menu:'销售管理',
           name:'销售单列表'
+        }
+      },
+      {
+        path:'sales/edit',component:() => import('@/views/Sales/edit.vue'),
+        meta:{
+          menu:'销售管理',
+          name:'销售单列表修改'
         }
       },
       {
