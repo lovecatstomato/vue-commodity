@@ -28,6 +28,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :current-page="currPage"
+      @current-change="pageChange"
+    >
+    </el-pagination>
+    <el-form v-show="updShow"> </el-form>
   </div>
 </template>
 
@@ -35,8 +45,11 @@
 export default {
   data() {
     return {
+      updShow: false,
       tableList: [],
-      su:[]
+      su: [],
+      total: 0, // 分页的数据总数量
+      currPage: 1,
     };
   },
   //过滤器
@@ -60,32 +73,42 @@ export default {
     //页面跳转
     Addlist(data) {
       console.log(data);
-      this.$router.push({ path: "addlist/edit" ,query:{data}});
+      this.$router.push({ path: "addlist/edit", query: { data } });
+    },
+    // 请求分页数据
+    pageChange(currPage) {
+      // this.page = currPage
+      
+      this.Purchase(currPage);
     },
     // 获取数据
     Purchase(type = 1) {
       this.$axios
         .get("/main/purchase/pomain/show?type=" + type)
-        .then(restul => {
+        .then((restul) => {
           this.tableList = restul.list;
+          this.total = restul.total;
+          this.currPage = restul.pageNum;
         });
     },
-     //删除数据
+    //删除数据
     deleteUser(del) {
       console.log(del);
-      this.$axios.post("/main/purchase/pomain/delete", "poId="+del).then(redu => {
-        console.log(redu);
-        if (redu.code === 2) {
+      this.$axios
+        .post("/main/purchase/pomain/delete", "poId=" + del)
+        .then((redu) => {
           console.log(redu);
-          this.Purchase();
-          this.$notify({
-            title: "成功",
-            message: redu.message,
-            type: "success",
-            duration: "2000",
-          });
-        }
-      });
+          if (redu.code === 2) {
+            console.log(redu);
+            this.Purchase();
+            this.$notify({
+              title: "成功",
+              message: redu.message,
+              type: "success",
+              duration: "2000",
+            });
+          }
+        });
     },
   },
   //生命周期

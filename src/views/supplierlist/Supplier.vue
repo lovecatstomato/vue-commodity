@@ -27,7 +27,13 @@
       </el-table>
 
       <!-- 分页组件 -->
-      <el-pagination background layout="prev, pager, next" :total="total">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :current-page="currPage"
+        @current-change="pageChange"
+      >
       </el-pagination>
       <el-form v-show="updShow"> </el-form>
     </el-tab-pane>
@@ -149,6 +155,11 @@ export default {
     this.supplierlist(); //调用方式渲染数据
   },
   methods: {
+    pageChange(currPage) {
+      // this.page = currPage
+      console.log(currPage);
+      this.supplierlist(currPage)
+    },
     // 封装函数方式（供应商列表）
     supplierlist(page = 1) {
       this.$axios
@@ -161,17 +172,8 @@ export default {
     },
     //修改获取列表
     shows(data) {
-      let Revi = this.Revise_Supplier;
       this.dialogVisible = true;
-      Revi.address = data.address; //地址
-      Revi.contactor = data.contactor; //供应商联系人
-      Revi.createDate = data.createDate; //注册日期
-      Revi.passWord = data.passWord; //密码
-      Revi.fax = data.fax; //传真
-      Revi.name = data.name; //供应商名称
-      Revi.postCode = data.postCode; //邮政编码
-      Revi.tel = data.tel; //电话
-      Revi.venderCode = data.venderCode; //供应商编号
+      this.Revise_Supplier = data//获取修改数据
       console.log(Revi.venderCode);
     },
     //修改确定按钮
@@ -179,33 +181,33 @@ export default {
       //关闭窗口
       this.dialogVisible = false;
       //拼接数据
-      let doda = qs.stringify(this.Revise_Supplier)
+      let doda = qs.stringify(this.Revise_Supplier);
       //传入后台
-      this.$axios.post("/main/purchase/vender/update",doda).then((Resltu)=>{
+      this.$axios.post("/main/purchase/vender/update", doda).then((Resltu) => {
         console.log(Resltu);
         //成功
         if (Resltu.code == 2) {
           //重新渲染数据
-          this.supplierlist()
+          this.supplierlist();
           //成功提示
           this.$notify({
-            title:"修改成功",
+            title: "修改成功",
             message: Resltu.message,
-            type:"success",
-            duration:"2000",
+            type: "success",
+            duration: "2000",
           });
         }
         //失败
         if (Resltu.code == 3) {
-          this.supplierlist()
+          this.supplierlist();
           this.$notify({
-            title: '修改失败',
+            title: "修改失败",
             message: Resltu.message,
-            type:"success",
-            duration:"2000",
+            type: "success",
+            duration: "2000",
           });
         }
-      })
+      });
     },
     //添加保存
     addUser() {
@@ -234,9 +236,9 @@ export default {
           this.AppSupplier.passWord = "";
         }
         if (resu == 3) {
-          this.supplierlist()
+          this.supplierlist();
           this.$notify({
-            title: '添加失败',
+            title: "添加失败",
             message: resu.message,
             type: "success",
             duration: "2000",
@@ -244,19 +246,21 @@ export default {
         }
       });
     },
-    deleteUser(venderCode){
-      this.$axios.post("/main/purchase/vender/delete","venderCode="+venderCode).then((deletsu) => {
-        if (deletsu.code == 2) {
-          this.supplierlist()
-          this.$notify({
-            title: '删除',
-            message: deletsu.message,
-            type: "success",
-            duration: "2000",
-          });
-        }
-      })
-    }
+    deleteUser(venderCode) {
+      this.$axios
+        .post("/main/purchase/vender/delete", "venderCode=" + venderCode)
+        .then((deletsu) => {
+          if (deletsu.code == 2) {
+            this.supplierlist();
+            this.$notify({
+              title: "删除",
+              message: deletsu.message,
+              type: "success",
+              duration: "2000",
+            });
+          }
+        });
+    },
   },
 };
 </script>

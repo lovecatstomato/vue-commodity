@@ -77,9 +77,10 @@ export default {
   methods: {
     //页数
     pageChange(currPage) {
-      this.Delivery(currPage);
-      this.Payment(currPage);
-      this.Prepayments(currPage);
+      this.page = currPage
+      this.Delivery();
+      this.Payment();
+      this.Prepayments();
     },
     //货到付款
     Delivery() {
@@ -143,7 +144,7 @@ export default {
         )
         .then((restock) => {
           console.log(restock);
-          if (restock == 2) {
+          if (restock.code == 2) {
             this.$notify({
               title: "成功",
               message: restock.message,
@@ -151,7 +152,7 @@ export default {
               duration: "2000",
             });
           }
-          if (restock == 3) {
+          if (restock.code == 3) {
             this.$notify({
               title: "失败",
               message: restock.message,

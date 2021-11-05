@@ -143,7 +143,6 @@
         <el-table-column property="unitName" label="数量单位"></el-table-column>
       </el-table>
     </el-dialog>
-
     <el-button type="" @click="tain">修改</el-button>
   </div>
 </template>

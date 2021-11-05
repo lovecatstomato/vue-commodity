@@ -175,6 +175,21 @@ export default {
         remark: "", // 备注
         poitems: [], // 采购产品明细
       },
+      //重置数组
+      qingkong: {
+        poId: generateId(), //采购单编号
+        venderCode: "", //供应商编号
+        account: "", //创建用户
+        createTime: currTime(), //时间
+        tipFee: 0, //附加费用
+        productTotal: "", //产品总价
+        poTotal: "", //采购总价
+        payType: 1, //付款方式
+        prePayFee: 0, //最低预付款金额
+        status: 1, //采购单状态
+        remark: "", // 备注
+        poitems: [], // 采购产品明细
+      },
       //单独获取的数据必须是数组
       //供应商列表
       supplier: [],
@@ -189,11 +204,13 @@ export default {
   created() {
     this.suppliers(); // 渲染供应商列表
     this.poinfo.account = this.account;
+    this.qingkong.account = this.account;
   },
   methods: {
     // 选择商品确定按钮
     Obtain() {
       this.dialogProductVisible = false;
+      // this.poinfo.poitems = ""
     },
     //选择商品
     showProductDialog(idx) {
@@ -201,11 +218,12 @@ export default {
       this.dialogProductVisible = true;
       this.loadProduct = true;
       //获取明细产品管理数据
-      this.$axios.get("/main/sell/product/all").then(result => {
+      this.$axios.get("/main/sell/product/all").then((result) => {
         console.log(result);
         this.currPage = result;
         this.loadProduct = false;
       });
+      
     },
     //显示选中行的数据
     selectProduct(currentRow) {
@@ -218,7 +236,7 @@ export default {
     },
     //获取供应商列表
     suppliers() {
-      this.$axios.get("/main/purchase/vender/all").then(resu => {
+      this.$axios.get("/main/purchase/vender/all").then((resu) => {
         this.supplier = resu;
       });
     },
@@ -252,6 +270,8 @@ export default {
               type: "success",
               duration: "2000",
             });
+            //重置数组
+            // this.poinfo = this.qingkong;
           } else if (re.code == 3) {
             console.log(this.poinfo);
             this.$notify({
@@ -260,6 +280,15 @@ export default {
               type: "success",
               duration: "2000",
             });
+          } else if (re.code == 4) {
+            console.log(this.poinfo);
+            this.$notify({
+              title: "错误",
+              message: re.message,
+              type: "success",
+              duration: "2000",
+            });
+            console.log(re.message);
           }
         });
     },
