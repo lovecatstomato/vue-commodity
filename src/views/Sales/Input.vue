@@ -255,7 +255,19 @@ export default {
               type: "success",
               duration: "2000",
             });
-            
+            //重置数组
+            this.poinfo.soitems = []
+            this.poinfo.soId = generateId()
+            this.poinfo.customerCode = ""
+            this.poinfo.account = this.account
+            this.poinfo.createTime = currTime()
+            this.poinfo.tipFee = 0
+            this.poinfo.productTotal = ""
+            this.poinfo.soTotal = ""
+            this.poinfo.payType = 1
+            this.poinfo.prePayFee = 0
+            this.poinfo.status = 1
+            this.poinfo.remark = ""
           } else if (re.code == 3) {
             console.log(this.poinfo);
             this.$notify({

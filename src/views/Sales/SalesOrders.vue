@@ -28,6 +28,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :current-page="currPage"
+      @current-change="pageChange"
+    >
+    </el-pagination>
+    <el-form v-show="updShow"> </el-form>
   </div>
 </template>
 
@@ -36,7 +46,12 @@ export default {
   data() {
     return {
       tableList: [],
-      su:[]
+      su: [],
+      updShow: false,
+      total: 0, // 分页的数据总数量
+      currPage: 1,
+      type: 1,
+      page: 1,
     };
   },
   //过滤器
@@ -60,34 +75,48 @@ export default {
     //页面跳转
     Addlist(data) {
       console.log(data);
-      this.$router.push({ path: "edit" ,query:{data}});
+      this.$router.push({ path: "edit", query: { data } });
+    },
+    // 请求分页数据
+    pageChange(currPage) {
+      // console.log(currPage);
+      this.page = currPage
+      this.Purchase();
     },
     // 获取数据
-    Purchase(type = 1) {
+    Purchase() {
       this.$axios
-        .get("/main/sell/somain/show?type=" + type)
-        .then(restul => {
+        .get("/main/sell/somain/show",{
+          params: {
+            type:this.type,
+            page:this.page
+          },
+        })
+        .then((restul) => {
           this.tableList = restul.list;
-        console.log(this.tableList);
-
+          this.total = restul.total;
+          this.currPage = restul.pageNum;
+          console.log(this.tableList);
         });
     },
-     //删除数据
+    //删除数据
     deleteUser(del) {
       console.log(del);
-      this.$axios.post("/main/sell/somain/delete", "soId="+del).then(redu => {
-        console.log(redu);
-        if (redu.code === 2) {
+      this.$axios
+        .post("/main/sell/somain/delete", "soId=" + del)
+        .then((redu) => {
           console.log(redu);
-          this.Purchase();
-          this.$notify({
-            title: "成功",
-            message: redu.message,
-            type: "success",
-            duration: "2000",
-          });
-        }
-      });
+          if (redu.code === 2) {
+            console.log(redu);
+            this.Purchase();
+            this.$notify({
+              title: "成功",
+              message: redu.message,
+              type: "success",
+              duration: "2000",
+            });
+          }
+        });
     },
   },
   //生命周期

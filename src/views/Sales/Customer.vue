@@ -10,10 +10,7 @@
         <el-table-column prop="name" label="供应商名称"></el-table-column>
         <el-table-column prop="postCode" label="邮政编码"> </el-table-column>
         <el-table-column prop="tel" label="电话"></el-table-column>
-        <el-table-column
-          prop="customerCode"
-          label="客户编号"
-        ></el-table-column>
+        <el-table-column prop="customerCode" label="客户编号"></el-table-column>
         <el-table-column label="操作" min-width="150px">
           <template v-slot="scope">
             <el-button type="primary" size="mini" @click="shows(scope.row)"
@@ -30,7 +27,13 @@
       </el-table>
 
       <!-- 分页组件 -->
-      <el-pagination background layout="prev, pager, next" :total="total">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :current-page="currPage"
+        @current-change="pageChange"
+        :total="total"
+      >
       </el-pagination>
       <el-form v-show="updShow"> </el-form>
     </el-tab-pane>
@@ -152,6 +155,10 @@ export default {
     this.supplierlist(); //调用方式渲染数据
   },
   methods: {
+    // 请求分页数据
+    pageChange(currPage) {
+      this.supplierlist(currPage);
+    },
     // 封装函数方式（供应商列表）
     supplierlist(page = 1) {
       this.$axios
@@ -225,7 +232,7 @@ export default {
           this.AppSupplier.name = "";
           this.AppSupplier.postCode = "";
           this.AppSupplier.tel = "";
-          this.AppSupplier.venderCode = "";
+          this.AppSupplier.customerCode = "";
           this.AppSupplier.passWord = "";
         }
         if (resu == 3) {

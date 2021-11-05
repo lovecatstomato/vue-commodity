@@ -26,7 +26,7 @@
       <el-table-column label="操作">
         <template v-slot="scope">
           <el-button type="primary" size="mini" @click="shows(scope.row)"
-            >付款</el-button
+            >收款</el-button
           >
         </template>
       </el-table-column>

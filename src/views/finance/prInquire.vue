@@ -52,6 +52,7 @@ export default {
       lists: [],
       total: 0, // 分页的数据总数量
       currPage: 1,
+      page: 1
     };
   },
   created() {
@@ -76,7 +77,8 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage
+      this.que();
     },
     que(pay) {
       // console.log(pay);

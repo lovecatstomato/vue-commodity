@@ -175,21 +175,6 @@ export default {
         remark: "", // 备注
         poitems: [], // 采购产品明细
       },
-      //重置数组
-      qingkong: {
-        poId: generateId(), //采购单编号
-        venderCode: "", //供应商编号
-        account: "", //创建用户
-        createTime: currTime(), //时间
-        tipFee: 0, //附加费用
-        productTotal: "", //产品总价
-        poTotal: "", //采购总价
-        payType: 1, //付款方式
-        prePayFee: 0, //最低预付款金额
-        status: 1, //采购单状态
-        remark: "", // 备注
-        poitems: [], // 采购产品明细
-      },
       //单独获取的数据必须是数组
       //供应商列表
       supplier: [],
@@ -204,7 +189,6 @@ export default {
   created() {
     this.suppliers(); // 渲染供应商列表
     this.poinfo.account = this.account;
-    this.qingkong.account = this.account;
   },
   methods: {
     // 选择商品确定按钮
@@ -271,7 +255,18 @@ export default {
               duration: "2000",
             });
             //重置数组
-            // this.poinfo = this.qingkong;
+            this.poinfo.poitems = []
+            this.poinfo.poId = generateId()
+            this.poinfo.venderCode = ""
+            this.poinfo.account = this.account
+            this.poinfo.createTime = currTime()
+            this.poinfo.tipFee = ""
+            this.poinfo.productTotal = ""
+            this.poinfo.poTotal = ""
+            this.poinfo.payType = ""
+            this.poinfo.prePayFee = ""
+            this.poinfo.status = ""
+            this.poinfo.remark = ""
           } else if (re.code == 3) {
             console.log(this.poinfo);
             this.$notify({
