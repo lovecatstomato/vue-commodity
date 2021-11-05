@@ -14,8 +14,8 @@
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
+    <span class="end">采购单总数: {{ this.lis.totalNum }}</span>
 
-    采购单总数: {{ this.lis.totalNum }}
     <!-- 显示 -->
     <el-table :data="lists" style="width: 100%">
       <el-table-column prop="ProductCode" label="产品编号"></el-table-column>
@@ -68,7 +68,8 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage;
+      this.que();
     },
     //查询按钮
     que() {
@@ -84,11 +85,18 @@ export default {
           console.log(res);
           this.lis = res;
           this.lists = res.details.list;
-          this.total = res.total;
-          this.currPage = res.pageNum;
+          this.total = res.details.total;
+          this.currPage = res.details.pageNum;
           console.log(this.lists);
         });
     },
   },
 };
 </script>
+
+<style scoped>
+.end{
+  font-weight: bold;
+  padding: 10px 20px;
+}
+</style>

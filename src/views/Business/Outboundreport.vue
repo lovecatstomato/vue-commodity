@@ -14,21 +14,20 @@
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
+    <div class="end">
+      <span>出库单据数:{{ this.lis.total }}</span>
+      <span>产品总数量:{{ this.lis.totalNum }}</span>
+      <span>产品总金额:{{ this.lis.productTotal }}</span>
+    </div>
 
-    {{ this.lis.total }}: 出库单据数,{{ this.lis.totalNum }}: 产品总数量,
-    {{this.lis.productTotal}}:产品总金额
     <!-- 显示 -->
     <el-table :data="lists" style="width: 100%">
       <el-table-column prop="soId" label="销售单编号"></el-table-column>
-      <el-table-column prop="account" label="创建用户"></el-table-column>
-      <el-table-column prop="customerCode" label="客户编号"></el-table-column>
-      <!-- <el-table-column prop="venderName" label="供应商名字"></el-table-column> -->
-      <el-table-column prop="payType" label="付款方式">
-        <template v-slot="scope">{{ scope.row.payType | typ }}</template>
-      </el-table-column>
-      <el-table-column prop="status" label="处理状态">
-        <template v-slot="scope">{{ scope.row.status | sta }}</template>
-      </el-table-column>
+      <el-table-column prop="productCode" label="供应商编号"></el-table-column>
+      <el-table-column prop="name" label="商品名字"></el-table-column>
+      <el-table-column prop="stockTime" label="出库时间"> </el-table-column>
+      <el-table-column prop="productTotal" label="产品总计"></el-table-column>
+      <el-table-column prop="stockNum" label="库存数量"></el-table-column>
     </el-table>
     <!-- 分页组件 -->
     <el-pagination
@@ -76,7 +75,8 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage;
+      this.que();
     },
     //查询按钮
     que() {
@@ -92,11 +92,18 @@ export default {
           console.log(res);
           this.lis = res;
           this.lists = res.details.list;
-          this.total = res.total;
-          this.currPage = res.pageNum;
+          this.total = res.details.total;
+          this.currPage = res.details.pageNum;
           console.log(this.lists);
         });
     },
   },
 };
 </script>
+
+<style scoped>
+.end span {
+  font-weight: bold;
+  padding: 10px 20px;
+}
+</style>

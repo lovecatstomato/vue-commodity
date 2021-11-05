@@ -2,18 +2,25 @@
   <div>
     <!-- 查询窗口 -->
     <el-form :inline="true" :model="formInline">
-      <el-date-picker v-model="value2" type="month" placeholder="选择月" 
-      format="yyyy 年 MM 月"
-      value-format="yyyy-MM">
+      <el-date-picker
+        v-model="value2"
+        type="month"
+        placeholder="选择月"
+        format="yyyy 年 MM 月"
+        value-format="yyyy-MM"
+      >
       </el-date-picker>
       <el-form-item>
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
+    <div class="end">
+      <span>已了结数: {{ this.lis.endtotalnum }}</span>
+      <span>采购单总数: {{ this.lis.totalnum }}</span>
+      <span>采购单总金额: {{ this.lis.sototal }}</span>
+      <span>已付款金额: {{ this.lis.totalpay }}</span>
+    </div>
 
-    已了结数: {{ this.lis.endtotalnum }} 采购单总数:
-    {{ this.lis.totalnum }} 采购单总金额: {{ this.lis.pototal }} 已付款金额:
-    {{ this.lis.totalpay }}
     <!-- 显示 -->
     <el-table :data="lists" style="width: 100%">
       <el-table-column prop="soId" label="销售单编号"></el-table-column>
@@ -73,7 +80,8 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.que(currPage);
+      this.page = currPage
+      this.que();
     },
     //查询按钮
     que() {
@@ -89,11 +97,18 @@ export default {
           console.log(res);
           this.lis = res;
           this.lists = res.details.list;
-          this.total = res.total;
-          this.currPage = res.pageNum;
+          this.total = res.details.total;
+          this.currPage = res.details.pageNum;
           console.log(this.lists);
         });
     },
   },
 };
 </script>
+
+<style scoped>
+.end span {
+  font-weight: bold;
+  padding: 10px 20px;
+}
+</style>

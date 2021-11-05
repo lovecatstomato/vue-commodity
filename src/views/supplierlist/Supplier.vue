@@ -158,7 +158,7 @@ export default {
     pageChange(currPage) {
       // this.page = currPage
       console.log(currPage);
-      this.supplierlist(currPage)
+      this.supplierlist(currPage);
     },
     // 封装函数方式（供应商列表）
     supplierlist(page = 1) {
@@ -173,7 +173,7 @@ export default {
     //修改获取列表
     shows(data) {
       this.dialogVisible = true;
-      this.Revise_Supplier = data//获取修改数据
+      this.Revise_Supplier = data; //获取修改数据
       console.log(Revi.venderCode);
     },
     //修改确定按钮

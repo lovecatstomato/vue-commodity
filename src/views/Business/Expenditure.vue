@@ -14,11 +14,8 @@
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-form>
-    
-    </el-form>
     {{ this.lis.receCount }}:收款次数,{{ this.lis.recePrice }}:收款总金额,
-    {{this.lis.payCount}}:付款次数,{{ this.lis.payPrice }}:付款总金额
+    {{ this.lis.payCount }}:付款次数,{{ this.lis.payPrice }}:付款总金额
 
     <el-form>
       <el-form-item>
@@ -27,12 +24,12 @@
       </el-form-item>
     </el-form>
     <!-- 显示 -->
-    <el-table :data="lists" style="width: 100%">
+    <el-table :data="lists" style="width: 100%" v-show="se==1">
       <el-table-column prop="poId" label="产品编号"></el-table-column>
       <el-table-column prop="account" label="供应商姓名"></el-table-column>
       <el-table-column prop="createTime" label="数量"></el-table-column>
       <el-table-column prop="pay_price" label="数量"></el-table-column>
-       <el-table-column prop="status" label="处理状态" width="90">
+      <el-table-column prop="status" label="处理状态" width="90">
         <template slot-scope="scope">{{ scope.row.status | sta }}</template>
       </el-table-column>
     </el-table>
@@ -82,10 +79,10 @@ export default {
   methods: {
     // 请求分页数据
     pageChange(currPage) {
-      this.page = currPage
+      this.page = currPage;
       this.que();
       this.Receive();
-      this.Payment()
+      this.Payment();
     },
     //查询按钮
     que() {
@@ -107,7 +104,7 @@ export default {
         });
     },
     // 收款明细
-    Receive(){
+    Receive() {
       this.$axios
         .get("/main/report/payment/detail/receipt", {
           params: {
@@ -125,7 +122,7 @@ export default {
         });
     },
     // 付款明细
-    Payment(){
+    Payment() {
       this.$axios
         .get("/main/report/payment/detail/pay", {
           params: {
@@ -141,7 +138,7 @@ export default {
           this.currPage = resus.pageNum;
           // console.log(this.lists);
         });
-    }
+    },
   },
 };
 </script>
