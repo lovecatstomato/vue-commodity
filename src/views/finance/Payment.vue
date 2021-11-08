@@ -140,16 +140,11 @@ export default {
     //
     shows(Warehousing) {
       this.poId = Warehousing.poId;
-      // this.type = 2
-      // if (this.type == this.payType&& == 1) {
-
-      // }
-      // this.payType = Warehousing.payType;
-      // console.log(this.type);
-      this.$axios
+      if (Warehousing.payType == 3&&Warehousing.status == 2) {
+        this.$axios
         .post(
           "/main/finance/pay",
-          `poId=${this.poId}&type=${this.type}&page=${this.page}`
+          `poId=${this.poId}&type=1&page=${this.page}`
         )
         .then((restock) => {
           console.log(restock);
@@ -178,6 +173,40 @@ export default {
             });
           }
         });
+      }else(
+        this.$axios
+          .post(
+            "/main/finance/pay",
+            `poId=${this.poId}&type=${this.type}&page=${this.page}`
+          )
+          .then((restock) => {
+            console.log(restock);
+            if (restock.code == 2) {
+              this.$notify({
+                title: "成功",
+                message: restock.message,
+                type: "success",
+                duration: "2000",
+              });
+            }
+            if (restock.code == 3) {
+              this.$notify({
+                title: "失败",
+                message: restock.message,
+                type: "success",
+                duration: "2000",
+              });
+            }
+            if (restock.code == 4) {
+              this.$notify({
+                title: "错误",
+                message: restock.message,
+                type: "success",
+                duration: "2000",
+              });
+            }
+          })
+      )
     },
   },
 };

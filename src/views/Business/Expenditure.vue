@@ -14,8 +14,13 @@
         <el-button type="primary" @click="que">查询</el-button>
       </el-form-item>
     </el-form>
-    {{ this.lis.receCount }}:收款次数,{{ this.lis.recePrice }}:收款总金额,
-    {{ this.lis.payCount }}:付款次数,{{ this.lis.payPrice }}:付款总金额
+
+    <div class="end">
+      <span>收款次数:{{ this.lis.receCount }}</span>
+      <span>收款总金额:{{ this.lis.recePrice }}</span>
+      <span>付款次数 :{{ this.lis.payCount }}</span>
+      <span>付款总金额:{{ this.lis.payPrice }}</span>
+    </div>
 
     <el-form>
       <el-form-item>
@@ -23,17 +28,53 @@
         <el-button type="primary" @click="Payment">付款明细</el-button>
       </el-form-item>
     </el-form>
-    <!-- 显示 -->
-    <el-table :data="lists" style="width: 100%" v-show="se==1">
-      <el-table-column prop="poId" label="产品编号"></el-table-column>
-      <el-table-column prop="account" label="供应商姓名"></el-table-column>
-      <el-table-column prop="createTime" label="数量"></el-table-column>
-      <el-table-column prop="pay_price" label="数量"></el-table-column>
-      <el-table-column prop="status" label="处理状态" width="90">
-        <template slot-scope="scope">{{ scope.row.status | sta }}</template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页组件 -->
+    <!-- 付款显示 -->
+    <div v-show="se == 1">
+      <el-table :data="list" style="width: 100%">
+        <el-table-column prop="poId" label="产品编号"></el-table-column>
+        <el-table-column prop="account" label="供应商姓名"></el-table-column>
+        <el-table-column prop="createTime" label="数量"></el-table-column>
+        <el-table-column prop="pay_price" label="数量"></el-table-column>
+        <el-table-column prop="status" label="处理状态" width="90">
+          <template slot-scope="scope">{{ scope.row.status | sta }}</template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页组件 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :current-page="currPage"
+        @current-change="pageChange"
+      >
+      </el-pagination>
+      <el-form v-show="updShow"> </el-form>
+    </div>
+
+    <!-- 收款显示 -->
+    <div v-show="se == 2">
+      <el-table :data="lists" style="width: 100%">
+        <el-table-column prop="soId" label="产品编号"></el-table-column>
+        <el-table-column prop="account" label="供应商姓名"></el-table-column>
+        <el-table-column prop="createTime" label="数量"></el-table-column>
+        <el-table-column prop="pay_price" label="数量"></el-table-column>
+        <el-table-column prop="status" label="处理状态" width="90">
+          <template slot-scope="scope">{{ scope.row.status | sta }}</template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页组件 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :current-page="currPage"
+        @current-change="pageChanges"
+      >
+      </el-pagination>
+      <el-form v-show="updShow"> </el-form>
+    </div>
+
+    <!-- 分页组件
     <el-pagination
       background
       layout="prev, pager, next"
@@ -42,7 +83,7 @@
       @current-change="pageChange"
     >
     </el-pagination>
-    <el-form v-show="updShow"> </el-form>
+    <el-form v-show="updShow"> </el-form> -->
   </div>
 </template>
 
@@ -52,12 +93,17 @@ export default {
     return {
       updShow: false,
       // formInline: [], //查询数组
-      lists: [], //显示数组
+      lists: [], //显示收款数组
+      list:[],//显示付款数组
       lis: [],
       total: 0, // 分页的数据总数量
       currPage: 1,
-      page: 1, //页数
+      tot: 0,
+      curr: 1,
+      pages: 1, //付款页数
+      page:1,//收款页数
       value2: "",
+      se: 2,
     };
   },
   filters: {
@@ -77,12 +123,19 @@ export default {
     },
   },
   methods: {
-    // 请求分页数据
+    // 请求付款分页数据
     pageChange(currPage) {
-      this.page = currPage;
-      this.que();
-      this.Receive();
+      this.pages = currPage;
+      // this.que();
+      // this.Receive();
       this.Payment();
+    },
+    //请求收款分页数据
+    pageChanges(currPages) {
+      this.page = currPages;
+      // this.que();
+      this.Receive();
+      // this.Payment();
     },
     //查询按钮
     que() {
@@ -91,20 +144,21 @@ export default {
         .get("/main/report/payment/main", {
           params: {
             time: this.value2,
-            page: this.page,
+            // page: this.page,
           },
         })
         .then((res) => {
           // console.log(res);
           this.lis = res;
           // this.lists = res.details.list;
-          this.total = res.total;
-          this.currPage = res.pageNum;
+          // this.total = res.total;
+          // this.currPage = res.pageNum;
           // console.log(this.lists);
         });
     },
     // 收款明细
     Receive() {
+      this.se = 2;
       this.$axios
         .get("/main/report/payment/detail/receipt", {
           params: {
@@ -113,7 +167,7 @@ export default {
           },
         })
         .then((resu) => {
-          // console.log(resu);
+          console.log(resu);
           // this.lis = resu;
           this.lists = resu.list;
           this.total = resu.total;
@@ -123,22 +177,31 @@ export default {
     },
     // 付款明细
     Payment() {
+      this.se = 1;
       this.$axios
         .get("/main/report/payment/detail/pay", {
           params: {
             time: this.value2,
-            page: this.page,
+            page: this.pages,
           },
         })
         .then((resus) => {
-          // console.log(resus);
+          console.log(resus);
           // this.lis = resus;
-          this.lists = resus.list;
-          this.total = resus.total;
-          this.currPage = resus.pageNum;
+          this.list = resus.list;
+          this.tot = resus.total;
+          this.curr = resus.pageNum;
           // console.log(this.lists);
         });
     },
   },
 };
 </script>
+
+
+<style scoped>
+.end span {
+  font-weight: bold;
+  padding: 10px 20px;
+}
+</style>

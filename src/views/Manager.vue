@@ -26,7 +26,7 @@
             </template>
 
             <el-menu-item index="/manager/user/list">用户管理</el-menu-item>
-            <el-menu-item index="1-1">退出</el-menu-item>
+            <el-menu-item @click="logout">退出</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
@@ -177,6 +177,21 @@ export default {
     selectMenu(index, indexPath) {
       this.activeIndex = index;
     },
+    //退出按钮 
+    logout(){
+      this.$axios
+        .get("/sys/logout").then(logout =>{
+          if (logout.code == 2) {
+            this.$notify({
+              title: "成功",
+              message: logout.message,
+              type: "success",
+              duration: "2000",
+            });
+            this.$router.push({path:'/'})
+          }
+        })
+    }
   },
   created() {},
 };

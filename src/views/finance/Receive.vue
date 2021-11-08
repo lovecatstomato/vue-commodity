@@ -137,13 +137,39 @@ export default {
           this.tabPosition = resua.list;
         });
     },
-    //入库
+    //收款
     shows(Warehousing) {
       this.soId = Warehousing.soId;
-      console.log(this.soId);
+      // console.log(this.soId);
       this.payType = Warehousing.payType;
-      console.log(this.payType);
-      this.$axios
+      // console.log(this.payType);
+      if (Warehousing.payType == 3&&Warehousing.status == 2) {
+        this.$axios
+          .post(
+            "/main/finance/receipt",
+            `soId=${this.soId}&type=1&page=${this.page}`
+          )
+          .then((restock) => {
+            console.log(restock);
+            if (restock.code == 2) {
+              this.$notify({
+                title: "成功",
+                message: restock.message,
+                type: "success",
+                duration: "2000",
+              });
+            }
+            if (restock.code == 3) {
+              this.$notify({
+                title: "失败",
+                message: restock.message,
+                type: "success",
+                duration: "2000",
+              });
+            }
+          });
+      }else{
+        this.$axios
         .post(
           "/main/finance/receipt",
           `soId=${this.soId}&type=${this.type}&page=${this.page}`
@@ -167,6 +193,7 @@ export default {
             });
           }
         });
+      }
     },
   },
 };
