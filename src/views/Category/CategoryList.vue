@@ -73,7 +73,7 @@
 
     <!-- 添加产品列表 -->
     <el-tab-pane label="添加商品">
-      <el-form label-width="80px" style="width: 600px" v-model="add_table">
+      <el-form label-width="80px" style="width: 600px" :model="add_table">
         <el-form-item label="产品编号">
           <el-input v-model="add_table.productCode" />
         </el-form-item>
@@ -83,9 +83,22 @@
         <el-form-item label="数量单位">
           <el-input v-model="add_table.unitName" />
         </el-form-item>
-        <el-form-item label="分类编号">
+        <!-- <el-form-item label="">
           <el-input v-model="add_table.categoryId" />
+        </el-form-item> -->
+
+        <el-form-item label="分类编号" prop="name">
+          <el-select placeholder="请选择" v-model="add_table.categoryId">
+            <el-option
+              v-for="item in supplier"
+              :value="item.categoryId"
+              :key="item.name"
+            >
+              {{ item.name }}
+            </el-option>
+          </el-select>
         </el-form-item>
+
         <el-form-item label="销售价">
           <el-input v-model="add_table.price" />
         </el-form-item>
@@ -115,29 +128,38 @@ export default {
       add_table: {
         productCode: "", //产品编号
         name: "", //产品名称
-        unitName:"",//数量单位
+        unitName: "", //数量单位
         categoryId: "", //分类编号
         price: "", //销售价
         createDate: new Date().toISOString().substring(0, 10), //添加日期
         remark: "", //描述
       },
       //修改数组
-      Revise_Supplier:{
+      Revise_Supplier: {
         productCode: "", //产品编号
         name: "", //产品名称
-        unitName:"",//数量单位
+        unitName: "", //数量单位
         categoryId: "", //分类编号
         price: "", //销售价
         createDate: "", //添加日期
         remark: "", //描述
-      }
+      },
+      supplier: [],
     };
   },
   //渲染
   created() {
     this.commoList();
+    this.suppliers()
   },
   methods: {
+    suppliers() {
+      this.$axios.get("/main/sell/category/all").then((resu) => {
+        // console.log(resu);
+        this.supplier = resu;
+        // console.log();
+      });
+    },
     // 请求分页数据
     pageChange(currPage) {
       // console.log(currPage);
@@ -205,12 +227,12 @@ export default {
             duration: "2000",
           });
           //清空列表
-          this.add_table.productCode = ""
-          this.add_table.name = ""
-          this.add_table.categoryId = ""
-          this.add_table.price = ""
-          this.add_table.remark = ""
-          this.add_table.unitName = ""
+          this.add_table.productCode = "";
+          this.add_table.name = "";
+          this.add_table.categoryId = "";
+          this.add_table.price = "";
+          this.add_table.remark = "";
+          this.add_table.unitName = "";
         }
         if (resu.code == 3) {
           this.commoList();
